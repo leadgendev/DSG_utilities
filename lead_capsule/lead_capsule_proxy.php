@@ -20,12 +20,17 @@ $redirect_reject = $config[$_proxy_for]['redirect_reject'];
 
 $request = $request . "?CampaignID=$campaign_id";
 foreach ($_GET as $key => $value) {
+	$key = urlencode($key);
+	$value = urlencode($value);
 	$request .= "&$key=$value";
 }
 
 $response = file_get_contents($request);
 $xml = simplexml_load_string($response);
 $is_valid = $xml->Response->IsValid;
+
+echo $xml;
+die;
 
 if ( $is_valid == 'True' ) {
 	header( "Location: $redirect_accept" );
