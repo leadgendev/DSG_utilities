@@ -7,7 +7,7 @@
  * Created: June 27, 2013
  **************************************************************/
  
-$config = parse_ini_file('lead_capsule_proxy.ini');
+$config = parse_ini_file('lead_capsule_proxy.ini', true);
 
 $request = "http://datastream.leadcapsule.com/Leads/LeadPost.aspx";
 
@@ -25,12 +25,18 @@ foreach ($_GET as $key => $value) {
 	$request .= "&$key=$value";
 }
 
+//echo $request;
+//die;
+
 $response = file_get_contents($request);
 $xml = simplexml_load_string($response);
-$is_valid = $xml->Response->IsValid;
+$is_valid = (string) $xml->IsValid;
 
-echo $xml;
-die;
+//echo $xml;
+//print_r($xml);
+//echo $response;
+//echo $is_valid;
+//die;
 
 if ( $is_valid == 'True' ) {
 	header( "Location: $redirect_accept" );
